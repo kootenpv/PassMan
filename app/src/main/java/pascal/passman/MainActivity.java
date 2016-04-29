@@ -1,6 +1,7 @@
 package pascal.passman;
 
 import android.content.DialogInterface;
+import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lambdaworks.crypto.SCrypt;
@@ -27,17 +30,20 @@ public class MainActivity extends AppCompatActivity {
     public String result;
 
     public void sayHello(View v) {
+
+
         EditText passField = (EditText)findViewById(R.id.editText);
         EditText keyField = (EditText)findViewById(R.id.editText2);
 
         try {
-            result = "!A" + bytesToHex(SCrypt.scrypt(passField.getText().toString().getBytes("UTF-8"), keyField.getText().toString().getBytes("UTF-8"), 2048, 1, 1, 32)).substring(0, 30).toLowerCase();
+            result = "!A" + bytesToHex(SCrypt.scrypt(passField.getText().toString().getBytes("UTF-8"), keyField.getText().toString().getBytes("UTF-8"), 32768, 8, 1, 32)).substring(0, 30).toLowerCase();
         } catch (java.security.GeneralSecurityException e) {
             result = "WronK";
         } catch (java.io.UnsupportedEncodingException e) {
             result = "encoding";
         };
 
+        //progressBar.setVisibility(View.INVISIBLE);
         copyToClipboard(result);
     }
 
